@@ -1,0 +1,3 @@
+[submodule "gv_xml"]
+	path = gv_xml
+	url = git@github.com:goodvibes-org/gv_xml.git
