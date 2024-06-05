@@ -1,4 +1,7 @@
 import pandas as pd
+from io import BytesIO
+
+
 
 renames = {"Codigo": "codigo",
  "Descripcion": "descripcion",
@@ -70,16 +73,17 @@ renames = {"Codigo": "codigo",
 
  
 def convert(bytedata : bytes) -> bytes:
-	df = pd.read_excel(bytedata)
+	df = pd.read_excel(BytesIO(bytedata))
 	# df = pd.read_excel("BPC_Productos.xlsx")
 	df.rename(columns=renames, inplace=True)
 	ingredientes = pd.concat([df.descripcion, df.filter(regex = r"ingredient \d*")], axis=1)
 	ftr = df.filter(regex = r"ingredient \d*").columns 
 	cols = list(set(df.columns).difference(ftr))
-	producto = df[cols]
-	producto.drop(columns = [  'unnamed: 64', 'unnamed: 65', 'unnamed: 63', 'unnamed: 62',
-       'unnamed: 66'], inplace = True)
+	producto = df.copy(deep=True)[cols]
+	producto.drop(columns = ['unnamed: 64', 'unnamed: 65', 'unnamed: 63', 'unnamed: 62','unnamed: 66'], inplace = True)
 	print(f"pasamo {producto.columns}")
-	ingredientes.to_csv("/home/gonik/Documents/git/goodvibes-org/gv_xml/pre_ingest/bpc_productos_proc_ingredientes.csv")
-	producto.to_csv("/home/gonik/Documents/git/goodvibes-org/gv_xml/pre_ingest/bpc_productos_proc.csv")
+	# ingredientes.to_csv("/home/gonik/Documents/git/goodvibes-org/gv_xml/pre_ingest/bpc_productos_proc_ingredientes.csv")
+	# producto.to_csv("/home/gonik/Documents/git/goodvibes-org/gv_xml/pre_ingest/bpc_productos_proc.csv")
+	ingredientes.to_csv("/app/data/db_files/bpc_productos_proc_ingredientes.csv")
+	producto.to_csv("/app/data/db_files/bpc_productos_proc.csv")
 	return  producto.to_string(), ingredientes.to_string()

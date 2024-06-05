@@ -1,0 +1,79 @@
+services:
+  app:
+    build: .
+    restart: "always"
+    ports:
+      - "7501:8501"
+    volumes:
+      - storage:/app/data:rw
+    environment:
+      - VIRTUAL_HOST=app.localhost
+  watcher:
+    image: alpine:latest
+    volumes:
+      - storage:/app/data:rw
+    command: "sleep 1000"
+  calculator:
+    build: ../gv_xml/
+    volumes:
+      - storage:/data/share:rw
+    expose:
+      - 3000
+    env_file:
+      - ../gv_xml/docker.env
+  filebrowser:
+    image: hurlenko/filebrowser
+    # user: "${UID}:${GID}"
+    # user: "1000:1000"
+    ports:
+      - 7000:8080
+    volumes:
+      - storage:/data
+      - /CONFIG_DIR:/config
+    environment:
+      - FB_BASEURL=/filebrowser
+      - VIRTUAL_HOST=filebrowser.localhost 
+    restart: always
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    # set shared memory limit when using docker-compose
+    shm_size: 128mb
+    # or set shared memory limit when deploy via swarm stack
+    #volumes:
+    #  - type: tmpfs
+    #    target: /dev/shm
+    #    tmpfs:
+    #      size: 134217728 # 128*2^20 bytes = 128Mb
+    environment:
+      POSTGRES_PASSWORD: example
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      - VIRTUAL_HOST=db.localhost  
+  nginx-proxy:
+    # image: nginxproxy/nginx-proxy
+    build: ./nginx
+    container_name: nginx-proxy
+    
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    environment:
+      - APP_VHOST=app.localhost
+    # if you want to proxy based on host ports, you'll want to use the host network
+    # network_mode: "host"
+
+  whoami:
+    image: jwilder/whoami
+    environment:
+      - VIRTUAL_HOST=whoami.localhost
+volumes:
+  storage:

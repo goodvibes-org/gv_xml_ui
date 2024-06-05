@@ -1,12 +1,13 @@
 from productos import convert
 from ingredientes import convert as ing_convert
+import os
 import requests
 import streamlit as st 
 import pandas as pd
 st.title(
 	"GV XML Score Calculator"
 )
-
+# os.mkdir("/app/data/db_files")
 
 productos = st.file_uploader("upload product database data") 
 ingredientes = st.file_uploader("upload ingredient database data")
@@ -35,9 +36,9 @@ if productos is not None and ingredientes is not None:
 			# json.dump(payload,file)
 		# response = requests.post(url= "http://localhost:3000/first_run_bytes", json = payload).content.decode()
 		if not update_run:
-			response = requests.get(url = "http://localhost:3000/")
+			response = requests.get(url = "http://calculator:3000/")
 		else:
-			response = requests.get(url = "http://localhost:3000/update")
+			response = requests.get(url = "http://calculator:3000/update")
 		st.text(response.content.decode())
 		st.subheader("EXITO")
 		
