@@ -1,5 +1,6 @@
 from productos import convert
 from ingredientes import convert as ing_convert
+from dotenv import load_dotenv
 import os
 import requests
 import streamlit as st 
@@ -7,7 +8,8 @@ import pandas as pd
 st.title(
 	"GV XML Score Calculator"
 )
-# os.mkdir("/app/data/db_files")
+
+load_dotenv(".env")
 
 productos = st.file_uploader("upload product database data") 
 ingredientes = st.file_uploader("upload ingredient database data")
@@ -23,8 +25,8 @@ if productos is not None and ingredientes is not None:
 	buti = st.button("RUN")
 	if buti:
 		st.subheader("Este comando tomará cierto tiempo, esperar hasta cartel EXITO")
-		prod, ing_prod = convert(productos.read())
 		ing = ing_convert(ingredientes.read())
+		prod, ing_prod = convert(productos.read())
 		st.write("Archivos digeridos exitosamente, corriendo scores")
 		payload = {
 			"prod_data" : prod,
@@ -39,6 +41,6 @@ if productos is not None and ingredientes is not None:
 			response = requests.get(url = "http://calculator:3000/")
 		else:
 			response = requests.get(url = "http://calculator:3000/update")
-		st.text(response.content.decode())
+		st.text(f"Archivos nuevos guardados en = {response.content.decode()}")
 		st.subheader("EXITO")
 		
