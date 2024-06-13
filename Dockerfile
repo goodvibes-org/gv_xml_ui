@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt ./requirements.txt
 RUN pip3 install -r requirements.txt
 COPY . .
+COPY container.env .env
 RUN mkdir -p ./data/db_files/export/dumpy
 EXPOSE 8501
 
