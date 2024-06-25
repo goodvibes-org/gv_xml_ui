@@ -63,7 +63,7 @@ services:
     container_name: nginx-proxy
     
     ports:
-      - "80:80"
+      - "2000:80"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     environment:

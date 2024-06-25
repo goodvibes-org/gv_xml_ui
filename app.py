@@ -33,7 +33,7 @@ if productos is not None and ingredientes is not None:
 			"prod_ing_data": ing_prod,
 			"ing_data": ing
 		}
-		print("about to make request")
+		st.write("about to make request")
 		# with open("jsondump.json", "w") as file:
 			# json.dump(payload,file)
 		# response = requests.post(url= "http://localhost:3000/first_run_bytes", json = payload).content.decode()
@@ -42,5 +42,5 @@ if productos is not None and ingredientes is not None:
 		else:
 			response = requests.get(url = f"http://{base_url}:3000/update")
 		st.text(f"Archivos nuevos guardados en = {response.content.decode()}")
+		st.link_button("resultados", "http=//{base_url}:8080")
 		st.subheader("EXITO")
-		

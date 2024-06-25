@@ -13,7 +13,7 @@ COPY requirements.txt ./requirements.txt
 RUN pip3 install -r requirements.txt
 COPY . .
 COPY container.env .env
-RUN mkdir -p ./data/db_files/export/dumpy
+# RUN mkdir -p ./data/db_files/export/dumpy
 EXPOSE 8501
 
 HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
