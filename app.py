@@ -25,6 +25,8 @@ if productos is not None and ingredientes is not None:
 	buti = st.button("RUN")
 	if buti:
 		st.subheader("Este comando tomará cierto tiempo, esperar hasta cartel EXITO")
+		st.write(ingredientes)
+		st.write(ingredientes.file_id())
 		ing = ing_convert(ingredientes.read())
 		prod, ing_prod = convert(productos.read())
 		st.write("Archivos digeridos exitosamente, corriendo scores")
