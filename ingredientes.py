@@ -1,4 +1,4 @@
-from io import BytesIO
+from io import BytesIO, StringIO
 import pandas as pd
 import os
 
@@ -59,6 +59,6 @@ def convert(bytedata : bytes) -> bytes:
 	df = pd.read_excel(BytesIO(bytedata))
 	df.rename(columns=equiv, inplace = True)
 	# df.to_csv("/home/gonik/Documents/git/goodvibes-org/gv_xml/pre_ingest/bpc_ingredientes_proc.csv")
-	df.to_csv(f"{path}/bpc_ingredientes_proc.csv")
+	# df.to_csv(f"{path}/bpc_ingredientes_proc.csv")
 
 	return df.to_string()
