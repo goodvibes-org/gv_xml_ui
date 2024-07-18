@@ -59,10 +59,10 @@ if productos is not None and ingredientes is not None:
 		# with open("jsondump.json", "w") as file:
 			# json.dump(payload,file)
 		# response = requests.post(url= "http://localhost:3000/first_run_bytes", json = payload).content.decode()
-		# if not update_run:
-		# 	response = requests.get(url = f"http://{base_url}:3000/")
-		# else:
-		# 	response = requests.get(url = f"http://{base_url}:3000/update")
-		# st.text(f"Archivos nuevos guardados en = {response.content.decode()}")
+		if not update_run:
+			response = requests.get(url = f"http://solonumeros.com.ar:3000/gcs")
+		else:
+			response = requests.get(url = f"http://{base_url}:3000/update")
+		st.text(f"Archivos nuevos guardados en = {response.content.decode()}")
 		st.link_button("resultados", "http=//{base_url}:8080")
 		st.subheader("EXITO")
