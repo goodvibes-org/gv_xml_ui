@@ -68,7 +68,8 @@ if productos is not None and ingredientes is not None:
 			# json.dump(payload,file)
 		# response = requests.post(url= "http://localhost:3000/first_run_bytes", json = payload).content.decode()
 		if not update_run:
-			response = requests.get(url = f"http://solonumeros.com.ar:3000/gcs")
+			response = requests.get(url = f"http://calculator:3000/")
+			st.write("request made")
 		else:
 			response = requests.get(url = f"http://{base_url}:3000/update")
 		st.text(f"Archivos nuevos guardados en = {response.content.decode()}")
