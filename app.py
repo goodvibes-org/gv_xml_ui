@@ -13,9 +13,9 @@ st.title(
 )
 
 
-PRODUCTOS_BUCKET_PATH = "db/productos.csv"
-INGREDIENTES_BUCKET_PATH = "db/ingredientes.csv"
-PROD_ING_BUCKET_PATH = "db/prod_ingredientes.csv"
+PRODUCTOS_BUCKET_PATH = "db/bpc_productos_proc.csv"
+INGREDIENTES_BUCKET_PATH = "db/bpc_ingredientes_proc.csv"
+PROD_ING_BUCKET_PATH = "db/bpc_productos_proc_ingredientes.csv"
 
 load_dotenv(".env")
 storage_client = storage.Client()
@@ -49,9 +49,9 @@ if productos is not None and ingredientes is not None:
 		print("Ingredientes")
 		ing_blob.upload_from_filename("bpc_ingredientes_proc.csv")
 		print("Productos")
-		prod_blob.upload_from_file("bpc_productos_proc.csv")
+		prod_blob.upload_from_filename("bpc_productos_proc.csv")
 		print("Ingredientes de Productos")
-		prod_ing_blob.upload_from_file("bpc_productos_proc_ingredientes.csv")
+		prod_ing_blob.upload_from_filename("bpc_productos_proc_ingredientes.csv")
 		
 		
 		# payload = {
