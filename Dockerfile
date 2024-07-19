@@ -4,6 +4,7 @@ WORKDIR /app
 RUN mkdir -p ./data/db_files
 RUN apt-get update && apt-get install -y \
     build-essential \
+    wget \
     curl \
     software-properties-common \
     git \
