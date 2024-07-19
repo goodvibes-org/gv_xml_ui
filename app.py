@@ -24,6 +24,10 @@ base_url = os.environ.get("REQUEST_URL")
 productos = st.file_uploader("upload product database data") 
 ingredientes = st.file_uploader("upload ingredient database data")
 if productos is not None and ingredientes is not None:
+	with open("BPC_Productos (1).xlsx", "wb") as file:
+		file.write(productos.getbuffer())
+	with open("BPC_Ingredientes.xlsx", "wb") as file:
+		file.write(ingredientes.getbuffer())
 	prod_blob = bucket.blob(PRODUCTOS_BUCKET_PATH)
 	ing_blob = bucket.blob(INGREDIENTES_BUCKET_PATH)
 	prod_ing_blob = bucket.blob(PROD_ING_BUCKET_PATH)
