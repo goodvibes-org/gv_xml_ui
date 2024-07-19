@@ -16,6 +16,7 @@ COPY . .
 COPY container.env .env
 # RUN mkdir -p ./data/db_files/export/dumpy
 RUN wget https://github.com/goodvibes-org/e2csv-bin/releases/latest/download/excel-to-csv
+RUN chmod +x "excel-to-csv"
 EXPOSE 8501
 
 HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
