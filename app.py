@@ -3,7 +3,7 @@ import datetime
 from ingredientes import convert as ing_convert
 from dotenv import load_dotenv
 import os
-import excel_to_csv as e2csv
+import subprocess
 import requests
 import streamlit as st 
 import pandas as pd
@@ -40,27 +40,25 @@ if productos is not None and ingredientes is not None:
 	buti = st.button("RUN")
 	if buti:
 		st.subheader("Este comando tomará cierto tiempo, esperar hasta cartel EXITO")
-		prod, ing_prod, ing = e2csv.convert()
-		prod = open(prod, "r")
-		ing_prod = open(ing_prod, "r")
-		ing = open(ing, "r")
+		subprocess.run("./excel-to-csv")
+		# prod = open(prod, "r")
+		# ing_prod = open(ing_prod, "r")
+		# ing = open(ing, "r")
 		st.write("Archivos digeridos exitosamente, corriendo scores")
 		
 		print("Ingredientes")
-		ing_blob.upload_from_file(ing)
+		ing_blob.upload_from_filename("bpc_ingredientes_proc.csv")
 		print("Productos")
-		prod_blob.upload_from_file(prod)
+		prod_blob.upload_from_file("bpc_productos_proc.csv")
 		print("Ingredientes de Productos")
-		prod_ing_blob.upload_from_file(ing_prod)
-		prod.close()
-		ing.close()
-		ing_prod.close()
+		prod_ing_blob.upload_from_file("bpc_productos_proc_ingredientes.csv")
 		
-		payload = {
-			"prod_data" : prod,
-			"prod_ing_data": ing_prod,
-			"ing_data": ing
-		}
+		
+		# payload = {
+		# 	"prod_data" : prod,
+		# 	"prod_ing_data": ing_prod,
+		# 	"ing_data": ing
+		# }
 		st.write("about to make request")
 		# with open("jsondump.json", "w") as file:
 			# json.dump(payload,file)
