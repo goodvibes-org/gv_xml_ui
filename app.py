@@ -3,6 +3,7 @@ import datetime
 from ingredientes import convert as ing_convert
 from dotenv import load_dotenv
 import os
+import excel_to_csv as e2csv
 import requests
 import streamlit as st 
 import pandas as pd
@@ -39,16 +40,21 @@ if productos is not None and ingredientes is not None:
 	buti = st.button("RUN")
 	if buti:
 		st.subheader("Este comando tomará cierto tiempo, esperar hasta cartel EXITO")
-		ing = ing_convert(ingredientes.read())
-		prod, ing_prod = convert(productos.read())
+		prod, ing_prod, ing = e2csv.convert()
+		prod = open(prod, "r")
+		ing_prod = open(ing_prod, "r")
+		ing = open(ing, "r")
 		st.write("Archivos digeridos exitosamente, corriendo scores")
 		
 		print("Ingredientes")
-		ing_blob.upload_from_string(ing, "text/csv")
+		ing_blob.upload_from_file(ing)
 		print("Productos")
-		prod_blob.upload_from_string(prod, "text/csv")
+		prod_blob.upload_from_file(prod)
 		print("Ingredientes de Productos")
-		prod_ing_blob.upload_from_string(ing_prod, "text/csv")
+		prod_ing_blob.upload_from_file(ing_prod)
+		prod.close()
+		ing.close()
+		ing_prod.close()
 		
 		payload = {
 			"prod_data" : prod,
