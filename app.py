@@ -54,12 +54,12 @@ if productos is not None and ingredientes is not None:
 		# ing = open(ing, "r")
 		st.write("Archivos digeridos exitosamente, corriendo scores")
 		
-		print("Ingredientes")
-		ing_blob.upload_from_filename("bpc_ingredientes_proc.csv")
-		print("Productos")
-		prod_blob.upload_from_filename("bpc_productos_proc.csv")
-		print("Ingredientes de Productos")
-		prod_ing_blob.upload_from_filename("bpc_productos_proc_ingredientes.csv")
+		# print("Ingredientes")
+		# ing_blob.upload_from_filename("bpc_ingredientes_proc.csv")
+		# print("Productos")
+		# prod_blob.upload_from_filename("bpc_productos_proc.csv")
+		# print("Ingredientes de Productos")
+		# prod_ing_blob.upload_from_filename("bpc_productos_proc_ingredientes.csv")
 		
 		
 		# payload = {
