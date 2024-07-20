@@ -15,6 +15,7 @@ RUN pip3 install -r requirements.txt
 COPY . .
 COPY container.env .env
 # RUN mkdir -p ./data/db_files/export/dumpy
+ADD https://api.github.com/repos/goodvibes-org/e2csv-bin/releases/latest metadata
 RUN wget https://github.com/goodvibes-org/e2csv-bin/releases/latest/download/excel-to-csv
 RUN chmod +x "excel-to-csv"
 EXPOSE 8501
