@@ -2,7 +2,7 @@ from productos import convert
 import datetime
 from ingredientes import convert as ing_convert
 from dotenv import load_dotenv
-import os
+import shutil
 import subprocess
 import requests
 import streamlit as st 
@@ -46,9 +46,9 @@ if productos is not None and ingredientes is not None:
 	if buti:
 		st.subheader("Este comando tomará cierto tiempo, esperar hasta cartel EXITO")
 		subprocess.run("./excel-to-csv")
-		os.rename("bpc_ingredientes_proc.csv", "data/db_files/bpc_ingredientes_proc.csv")
-		os.rename("bpc_productos_proc.csv", "data/db_files/bpc_productos_proc.csv")
-		os.rename("bpc_productos_proc_ingredientes.csv", "data/db_files/bpc_productos_proc_ingredientes.csv")
+		shutil.move("bpc_ingredientes_proc.csv", "data/db_files/bpc_ingredientes_proc.csv")
+		shutil.move("bpc_productos_proc.csv", "data/db_files/bpc_productos_proc.csv")
+		shutil.move("bpc_productos_proc_ingredientes.csv", "data/db_files/bpc_productos_proc_ingredientes.csv")
 		# prod = open(prod, "r")
 		# ing_prod = open(ing_prod, "r")
 		# ing = open(ing, "r")
