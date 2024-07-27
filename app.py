@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import shutil
 import subprocess
 import requests
-import streamlit as st 
+import streamlit as st
 import pandas as pd
 from google.cloud import storage
 import os
@@ -22,7 +22,7 @@ load_dotenv(".env")
 storage_client = storage.Client()
 bucket = storage_client.bucket("edu-xml")
 base_url = os.environ.get("REQUEST_URL")
-productos = st.file_uploader("upload product database data") 
+productos = st.file_uploader("upload product database data")
 ingredientes = st.file_uploader("upload ingredient database data")
 if productos is not None and ingredientes is not None:
 	with open("BPC_Productos (1).xlsx", "wb") as file:
@@ -32,7 +32,7 @@ if productos is not None and ingredientes is not None:
 	prod_blob = bucket.blob(PRODUCTOS_BUCKET_PATH)
 	ing_blob = bucket.blob(INGREDIENTES_BUCKET_PATH)
 	prod_ing_blob = bucket.blob(PROD_ING_BUCKET_PATH)
-	
+
 	st.write(
 		f"""
 		{productos.name} subido exitosamente\n
@@ -40,7 +40,7 @@ if productos is not None and ingredientes is not None:
 
 		"""
 		)
-	
+
 	update_run = st.checkbox("update run")
 	buti = st.button("RUN")
 	if buti:
@@ -53,15 +53,15 @@ if productos is not None and ingredientes is not None:
 		# ing_prod = open(ing_prod, "r")
 		# ing = open(ing, "r")
 		st.write("Archivos digeridos exitosamente, corriendo scores")
-		
+
 		# print("Ingredientes")
 		# ing_blob.upload_from_filename("bpc_ingredientes_proc.csv")
 		# print("Productos")
 		# prod_blob.upload_from_filename("bpc_productos_proc.csv")
 		# print("Ingredientes de Productos")
 		# prod_ing_blob.upload_from_filename("bpc_productos_proc_ingredientes.csv")
-		
-		
+
+
 		# payload = {
 		# 	"prod_data" : prod,
 		# 	"prod_ing_data": ing_prod,
@@ -76,6 +76,10 @@ if productos is not None and ingredientes is not None:
 			st.write("request made")
 		else:
 			response = requests.get(url = f"http://{base_url}:3000/update")
-		st.text(f"Archivos nuevos guardados en = {response.content.decode()}")
-		st.link_button("resultados", "http=//{base_url}:8080")
+		file_location = response.content.decode()
+		path = file_location.split("/data/share")[1]
+
+		st.text(f"Archivos nuevos guardados en = {file_location}")
+
+		st.link_button("resultados", f"http=//solonumeros.com.ar:7000/filebrowser/files{path}")
 		st.subheader("EXITO")
