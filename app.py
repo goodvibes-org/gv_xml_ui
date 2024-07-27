@@ -22,8 +22,8 @@ load_dotenv(".env")
 storage_client = storage.Client()
 bucket = storage_client.bucket("edu-xml")
 base_url = os.environ.get("REQUEST_URL")
-productos = st.file_uploader("upload product database data")
-ingredientes = st.file_uploader("upload ingredient database data")
+productos = st.file_uploader("Base de datos de Productos")
+ingredientes = st.file_uploader("Base de datos de Ingredientes")
 if productos is not None and ingredientes is not None:
 	with open("BPC_Productos (1).xlsx", "wb") as file:
 		file.write(productos.getbuffer())
@@ -45,7 +45,7 @@ if productos is not None and ingredientes is not None:
 	buti = st.button("RUN")
 	if buti:
 		st.subheader("Este comando tomará cierto tiempo, esperar hasta cartel EXITO")
-		subprocess.run("./excel-to-csv")
+		subprocess.run("./excel-to-csv").stdout().
 		shutil.move("bpc_ingredientes_proc.csv", "data/db_files/bpc_ingredientes_proc.csv")
 		shutil.move("bpc_productos_proc.csv", "data/db_files/bpc_productos_proc.csv")
 		shutil.move("bpc_productos_proc_ingredientes.csv", "data/db_files/bpc_productos_proc_ingredientes.csv")
