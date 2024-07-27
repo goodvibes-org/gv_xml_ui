@@ -45,7 +45,7 @@ if productos is not None and ingredientes is not None:
 	buti = st.button("RUN")
 	if buti:
 		st.subheader("Este comando tomará cierto tiempo, esperar hasta cartel EXITO")
-		subprocess.run("./excel-to-csv").stdout().
+		subprocess.run("./excel-to-csv")
 		shutil.move("bpc_ingredientes_proc.csv", "data/db_files/bpc_ingredientes_proc.csv")
 		shutil.move("bpc_productos_proc.csv", "data/db_files/bpc_productos_proc.csv")
 		shutil.move("bpc_productos_proc_ingredientes.csv", "data/db_files/bpc_productos_proc_ingredientes.csv")
