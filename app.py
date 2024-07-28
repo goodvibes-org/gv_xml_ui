@@ -17,17 +17,22 @@ st.title(
 PRODUCTOS_BUCKET_PATH = "db/bpc_productos_proc.csv"
 INGREDIENTES_BUCKET_PATH = "db/bpc_ingredientes_proc.csv"
 PROD_ING_BUCKET_PATH = "db/bpc_productos_proc_ingredientes.csv"
-
+sheet_ingredientes = "Ingredientes_Formatted_V1"
+sheet_ingredientes = "Productos"
 load_dotenv(".env")
 storage_client = storage.Client()
 bucket = storage_client.bucket("edu-xml")
 base_url = os.environ.get("REQUEST_URL")
 productos = st.file_uploader("Base de datos de Productos")
+if productos:
+    sheet_productos = st.text_input("Nombre de hoja", placeholder="Productos")
 ingredientes = st.file_uploader("Base de datos de Ingredientes")
+if ingredientes:
+    sheet_ingredientes = st.text_input("Nombre de hoja", placeholder="Ingredientes_Formatted_V1")
 if productos is not None and ingredientes is not None:
-	with open("BPC_Productos (1).xlsx", "wb") as file:
+	with open(productos.name, "wb") as file:
 		file.write(productos.getbuffer())
-	with open("BPC_Ingredientes.xlsx", "wb") as file:
+	with open(ingredientes.name, "wb") as file:
 		file.write(ingredientes.getbuffer())
 	prod_blob = bucket.blob(PRODUCTOS_BUCKET_PATH)
 	ing_blob = bucket.blob(INGREDIENTES_BUCKET_PATH)
@@ -40,12 +45,13 @@ if productos is not None and ingredientes is not None:
 
 		"""
 		)
+	if sheet_ingredientes.
 
 	update_run = st.checkbox("update run")
 	buti = st.button("RUN")
 	if buti:
 		st.subheader("Este comando tomará cierto tiempo, esperar hasta cartel EXITO")
-		subprocess.run("./excel-to-csv")
+		subprocess.run(["./excel-to-csv", productos.name, ingredientes.name ,sheet_productos,sheet_ingredientes])
 		shutil.move("bpc_ingredientes_proc.csv", "data/db_files/bpc_ingredientes_proc.csv")
 		shutil.move("bpc_productos_proc.csv", "data/db_files/bpc_productos_proc.csv")
 		shutil.move("bpc_productos_proc_ingredientes.csv", "data/db_files/bpc_productos_proc_ingredientes.csv")
