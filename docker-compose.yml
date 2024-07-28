@@ -6,34 +6,33 @@ services:
       - "7501:8501"
     volumes:
       - storage:/app/data:rw
+    env_file:
+      - ./gcs.env
     environment:
-      - VIRTUAL_HOST=app.localhost
-  watcher:
-    image: alpine:latest
-    volumes:
-      - storage:/app/data:rw
-    command: "sleep 1000"
+      - VIRTUAL_HOST=app.solonumeros.com.ar
+        #- VIRTUAL_PORT=2000
+
   calculator:
     build: ../gv_xml/
     volumes:
       - storage:/data/share:rw
-    expose:
-      - 3000
+    ports:
+      - "3000:3000"
     env_file:
+      - ./gcs.env
       - ../gv_xml/docker.env
   filebrowser:
     image: hurlenko/filebrowser
-    # user: "${UID}:${GID}"
-    # user: "1000:1000"
     ports:
       - 7000:8080
     volumes:
       - storage:/data
-      - /CONFIG_DIR:/config
+      - /home/goodvibes/gv_xml_ui/filebrowser/config:/config:rw
     environment:
       - FB_BASEURL=/filebrowser
       - VIRTUAL_HOST=filebrowser.localhost 
     restart: always
+
   db:
     image: postgres
     restart: always
@@ -54,26 +53,10 @@ services:
     image: adminer
     restart: always
     ports:
-      - 8080:8080
+      - 8085:8080
     environment:
       - VIRTUAL_HOST=db.localhost  
-  nginx-proxy:
-    # image: nginxproxy/nginx-proxy
-    build: ./nginx
-    container_name: nginx-proxy
-    
-    ports:
-      - "2000:80"
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-    environment:
-      - APP_VHOST=app.localhost
-    # if you want to proxy based on host ports, you'll want to use the host network
-    # network_mode: "host"
-
-  whoami:
-    image: jwilder/whoami
-    environment:
-      - VIRTUAL_HOST=whoami.localhost
+    deploy:
+      replicas: 0 
 volumes:
   storage:
