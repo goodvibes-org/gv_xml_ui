@@ -45,7 +45,6 @@ if productos is not None and ingredientes is not None:
 
 		"""
 		)
-	if sheet_ingredientes.
 
 	update_run = st.checkbox("update run")
 	buti = st.button("RUN")
