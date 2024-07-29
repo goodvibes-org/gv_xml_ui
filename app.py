@@ -28,13 +28,14 @@ if productos:
     st.write("Hoja por defecto `Productos`")
     change_sheet = st.button("Modificar")
     if change_sheet:
-        sheet_productos = st.text_input("Nombre de hoja")
+        sheet_productos = st.text_input("Nombre de hoja", on_change= lambda _ : st.write(sheet_productos))
+
 ingredientes = st.file_uploader("Base de datos de Ingredientes")
 if ingredientes:
     st.write("Hoja por defecto `Ingredientes_Formatted_V1`")
-    change_sheet = st.button("Modificar")
-    if change_sheet:
-        sheet_ingredientes = st.text_input("Nombre de hoja")
+    change_sheet_ing = st.button("Modificar")
+    if change_sheet_ing:
+        sheet_ingredientes = st.text_input("Nombre de hoja", on_change= lambda _ : st.write(sheet_ingredientes) )
 if productos is not None and ingredientes is not None:
 	with open(productos.name, "wb") as file:
 		file.write(productos.getbuffer())
