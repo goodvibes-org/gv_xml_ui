@@ -13,12 +13,11 @@ st.title(
 	"GV XML Score Calculator"
 )
 
-
+st.session_state["sheet_ingredientes"] = "Ingredientes_Formatted_V1"
 PRODUCTOS_BUCKET_PATH = "db/bpc_productos_proc.csv"
 INGREDIENTES_BUCKET_PATH = "db/bpc_ingredientes_proc.csv"
 PROD_ING_BUCKET_PATH = "db/bpc_productos_proc_ingredientes.csv"
-sheet_ingredientes = "Ingredientes_Formatted_V1"
-sheet_ingredientes = "Productos"
+st.session_state["sheet_productos"] = "Productos"
 load_dotenv(".env")
 storage_client = storage.Client()
 bucket = storage_client.bucket("edu-xml")
@@ -28,14 +27,15 @@ if productos:
     st.write("Hoja por defecto `Productos`")
     change_sheet = st.button("Modificar")
     if change_sheet:
-        sheet_productos = st.text_input("Nombre de hoja", on_change= lambda _ : st.write(sheet_productos))
-
+        st.session_state.sheet_productos = st.text_input("Nombre de hoja")
+        st.write(st.session_state.sheet_productos)
 ingredientes = st.file_uploader("Base de datos de Ingredientes")
 if ingredientes:
     st.write("Hoja por defecto `Ingredientes_Formatted_V1`")
     change_sheet_ing = st.button("Modificar")
     if change_sheet_ing:
-        sheet_ingredientes = st.text_input("Nombre de hoja", on_change= lambda _ : st.write(sheet_ingredientes) )
+        st.session_state.sheet_ingredientes = st.text_input("Nombre de hoja" )
+        st.write(st.session_state.sheet_ingredientes)
 if productos is not None and ingredientes is not None:
 	with open(productos.name, "wb") as file:
 		file.write(productos.getbuffer())
@@ -94,3 +94,5 @@ if productos is not None and ingredientes is not None:
 		st.text(f"Archivos nuevos guardados en = {path}")
 		st.link_button("resultados", f"http://solonumeros.com.ar:7000/filebrowser/files{path}")
 		st.subheader("EXITO")
+def just_write(what):
+    st.write(what)
