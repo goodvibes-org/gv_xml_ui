@@ -25,14 +25,14 @@ base_url = os.environ.get("REQUEST_URL")
 productos = st.file_uploader("Base de datos de Productos")
 if productos:
     st.write("Hoja por defecto `Productos`")
-    change_sheet = st.button("Modificar")
+    change_sheet = st.button("Modificar", key="productos")
     if change_sheet:
         st.session_state.sheet_productos = st.text_input("Nombre de hoja")
         st.write(st.session_state.sheet_productos)
 ingredientes = st.file_uploader("Base de datos de Ingredientes")
 if ingredientes:
     st.write("Hoja por defecto `Ingredientes_Formatted_V1`")
-    change_sheet_ing = st.button("Modificar")
+    change_sheet_ing = st.button("Modificar", key = "ing")
     if change_sheet_ing:
         st.session_state.sheet_ingredientes = st.text_input("Nombre de hoja" )
         st.write(st.session_state.sheet_ingredientes)
