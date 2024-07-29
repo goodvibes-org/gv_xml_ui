@@ -25,10 +25,16 @@ bucket = storage_client.bucket("edu-xml")
 base_url = os.environ.get("REQUEST_URL")
 productos = st.file_uploader("Base de datos de Productos")
 if productos:
-    sheet_productos = st.text_input("Nombre de hoja", placeholder="Productos")
+    st.write("Hoja por defecto `Productos`")
+    change_sheet = st.button("Modificar")
+    if change_sheet:
+        sheet_productos = st.text_input("Nombre de hoja")
 ingredientes = st.file_uploader("Base de datos de Ingredientes")
 if ingredientes:
-    sheet_ingredientes = st.text_input("Nombre de hoja", placeholder="Ingredientes_Formatted_V1")
+    st.write("Hoja por defecto `Ingredientes_Formatted_V1`")
+    change_sheet = st.button("Modificar")
+    if change_sheet:
+        sheet_ingredientes = st.text_input("Nombre de hoja")
 if productos is not None and ingredientes is not None:
 	with open(productos.name, "wb") as file:
 		file.write(productos.getbuffer())
