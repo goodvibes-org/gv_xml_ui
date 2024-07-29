@@ -58,7 +58,7 @@ if productos is not None and ingredientes is not None:
 	if buti:
 		st.subheader("Este comando tomará cierto tiempo, esperar hasta cartel EXITO")
 		sp = subprocess.check_output(["./excel-to-csv", productos.name, ingredientes.name ,st.session_state.sheet_productos,st.session_state.sheet_ingredientes])
-		st.write(sp)
+		st.write(sp.decode())
 		shutil.move("bpc_ingredientes_proc.csv", "data/db_files/bpc_ingredientes_proc.csv")
 		shutil.move("bpc_productos_proc.csv", "data/db_files/bpc_productos_proc.csv")
 		shutil.move("bpc_productos_proc_ingredientes.csv", "data/db_files/bpc_productos_proc_ingredientes.csv")
@@ -95,5 +95,3 @@ if productos is not None and ingredientes is not None:
 		st.text(f"Archivos nuevos guardados en = {path}")
 		st.link_button("resultados", f"http://solonumeros.com.ar:7000/filebrowser/files{path}")
 		st.subheader("EXITO")
-def just_write(what):
-    st.write(what)
