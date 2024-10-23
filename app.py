@@ -93,5 +93,5 @@ if productos is not None and ingredientes is not None:
 		path = file_location.split("/data/share")[1]
 
 		st.text(f"Archivos nuevos guardados en = {path}")
-		st.link_button("resultados", f"http://solonumeros.com.ar:7000/filebrowser/files{path}")
+		st.link_button("resultados", f"http://35.209.58.55/:7000/filebrowser/files{path}")
 		st.subheader("EXITO")
