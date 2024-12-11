@@ -18,7 +18,6 @@ services:
     depends_on:
       - app
       - filebrowser
-      - phfunhouse
 
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
@@ -40,8 +39,8 @@ services:
     env_file:
       - ./gcs.env
     environment:
-      - VIRTUAL_HOST=gvxml.work.gd
-      - LETSENCRYPT_HOST=gvxml.work.gd
+      - VIRTUAL_HOST=goodvibes.work.gd
+      - LETSENCRYPT_HOST=goodvibes.work.gd
       - LETSENCRYPT_EMAIL=gonik@quimica.unlp.edu.ar
         #- VIRTUAL_PORT=2000
 
@@ -66,9 +65,9 @@ services:
         #- "filebrowser.json:/filebrowser.json" # config file
     environment:
       - FB_BASEURL=/filebrowser
-      - VIRTUAL_HOST=output.gvxml.work.gd
+      - VIRTUAL_HOST=xmls.goodvibes.work.gd
       - VIRTUAL_PORT=8080
-      - LETSENCRYPT_HOST=output.gvxml.work.gd
+      - LETSENCRYPT_HOST=xmls.goodvibes.work.gd
       - LETSENCRYPT_EMAIL=gonik@quimica.unlp.edu.ar
     restart: always
 
@@ -88,18 +87,6 @@ services:
     environment:
       POSTGRES_PASSWORD: example
 
-  phfunhouse:
-    build: ./pH-Julia
-    restart: unless-stopped
-    expose:
-      - "80"
-    environment:
-      - VIRTUAL_HOST=phfunhouse.work.gd
-      - LETSENCRYPT_HOST=phfunhouse.work.gd
-      - LETSENCRYPT_EMAIL=gonik@quimica.unlp.edu.ar
-
-    depends_on: 
-      - letsencrypt
   adminer:
     image: adminer
     restart: always
