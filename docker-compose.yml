@@ -1,6 +1,9 @@
 services:
   nginx-proxy:
-    image: jwilder/nginx-proxy
+    build: ./nginx
+    container_name: nginx-proxy
+
+
     restart: unless-stopped
     ports:
       - "80:80"
@@ -52,14 +55,14 @@ services:
   filebrowser:
     image: hurlenko/filebrowser
     ports:
-      - 7000:80
+      - 80:7000
     volumes:
       - storage:/data
       - /home/goodvibes/gv_xml_ui/filebrowser/config:/config:rw
     environment:
       - FB_BASEURL=/filebrowser
       - VIRTUAL_HOST=resultados.gvxml.work.gd
-      - LETSENCRYPT_HOST=app.gvxml.work.gd
+      - LETSENCRYPT_HOST=resultados.gvxml.work.gd
       - LETSENCRYPT_EMAIL=gonik@quimica.unlp.edu.ar
     restart: always
 
