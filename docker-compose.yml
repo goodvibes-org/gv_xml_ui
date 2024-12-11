@@ -1,15 +1,43 @@
 services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - certs:/etc/nginx/certs:ro
+      - vhostd:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
+    depends_on:
+      - app
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    restart: always
+    environment:
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+    volumes:
+      - certs:/etc/nginx/certs:rw
+      - vhostd:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
   app:
     build: .
     restart: "always"
-    ports:
-      - "7501:8501"
+    expose:
+      - "80"
     volumes:
       - storage:/app/data:rw
     env_file:
       - ./gcs.env
     environment:
-      - VIRTUAL_HOST=app.solonumeros.com.ar
+      - VIRTUAL_HOST=app.gvxml.work.gd
+      - LETSENCRYPT_HOST=app.gvxml.work.gd
+      - LETSENCRYPT_EMAIL=gonik@quimica.unlp.edu.ar
         #- VIRTUAL_PORT=2000
 
   calculator:
@@ -24,13 +52,15 @@ services:
   filebrowser:
     image: hurlenko/filebrowser
     ports:
-      - 7000:8080
+      - 7000:80
     volumes:
       - storage:/data
       - /home/goodvibes/gv_xml_ui/filebrowser/config:/config:rw
     environment:
       - FB_BASEURL=/filebrowser
-      - VIRTUAL_HOST=filebrowser.localhost 
+      - VIRTUAL_HOST=resultados.gvxml.work.gd
+      - LETSENCRYPT_HOST=app.gvxml.work.gd
+      - LETSENCRYPT_EMAIL=gonik@quimica.unlp.edu.ar
     restart: always
 
   db:
@@ -55,8 +85,11 @@ services:
     ports:
       - 8085:8080
     environment:
-      - VIRTUAL_HOST=db.localhost  
+      - VIRTUAL_HOST=database.gvxml.work.gd  
     deploy:
       replicas: 0 
 volumes:
   storage:
+  certs:
+  html:
+  vhostd:
