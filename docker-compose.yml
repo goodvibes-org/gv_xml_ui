@@ -17,6 +17,7 @@ services:
       - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
     depends_on:
       - app
+      - filebrowser
 
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
@@ -38,8 +39,8 @@ services:
     env_file:
       - ./gcs.env
     environment:
-      - VIRTUAL_HOST=app.gvxml.work.gd
-      - LETSENCRYPT_HOST=app.gvxml.work.gd
+      - VIRTUAL_HOST=gvxml.work.gd
+      - LETSENCRYPT_HOST=gvxml.work.gd
       - LETSENCRYPT_EMAIL=gonik@quimica.unlp.edu.ar
         #- VIRTUAL_PORT=2000
 
@@ -49,19 +50,23 @@ services:
       - storage:/data/share:rw
     ports:
       - "3000:3000"
+
     env_file:
       - ./gcs.env
       - ../gv_xml/docker.env
   filebrowser:
     image: hurlenko/filebrowser
-    ports:
-      - 80:7000
+    container_name: filebrowser
+    user: 1000:1000 
     volumes:
-      - storage:/data
-      - /home/goodvibes/gv_xml_ui/filebrowser/config:/config:rw
+       - storage:/data
+#      - storage:/srv # files will be stored here  
+        #- "./filebrowser.db:/database.db" # users info/settings will be stored here
+        #- "filebrowser.json:/filebrowser.json" # config file
     environment:
       - FB_BASEURL=/filebrowser
       - VIRTUAL_HOST=resultados.gvxml.work.gd
+      - VIRTUAL_PORT=8080
       - LETSENCRYPT_HOST=resultados.gvxml.work.gd
       - LETSENCRYPT_EMAIL=gonik@quimica.unlp.edu.ar
     restart: always
