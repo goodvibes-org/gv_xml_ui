@@ -18,6 +18,7 @@ services:
     depends_on:
       - app
       - filebrowser
+      - phfunhouse
 
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
@@ -87,6 +88,18 @@ services:
     environment:
       POSTGRES_PASSWORD: example
 
+  phfunhouse:
+    build: ./pH-Julia
+    restart: unless-stopped
+    expose:
+      - "80"
+    environment:
+      - VIRTUAL_HOST=phfunhouse.work.gd
+      - LETSENCRYPT_HOST=phfunhouse.work.gd
+      - LETSENCRYPT_EMAIL=gonik@quimica.unlp.edu.ar
+
+    depends_on: 
+      - letsencrypt
   adminer:
     image: adminer
     restart: always
