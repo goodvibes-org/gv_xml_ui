@@ -93,5 +93,5 @@ if productos is not None and ingredientes is not None:
 		path = file_location.split("/data/share")[1]
 
 		st.text(f"Archivos nuevos guardados en = {path}")
-		st.link_button("resultados", f"https://resultados.gvxml.work.gd/filebrowser/files{path}")
+		st.link_button("resultados", f"https://output.gvxml.work.gd/filebrowser/files{path}")
 		st.subheader("EXITO")

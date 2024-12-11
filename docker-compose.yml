@@ -65,9 +65,9 @@ services:
         #- "filebrowser.json:/filebrowser.json" # config file
     environment:
       - FB_BASEURL=/filebrowser
-      - VIRTUAL_HOST=resultados.gvxml.work.gd
+      - VIRTUAL_HOST=output.gvxml.work.gd
       - VIRTUAL_PORT=8080
-      - LETSENCRYPT_HOST=resultados.gvxml.work.gd
+      - LETSENCRYPT_HOST=output.gvxml.work.gd
       - LETSENCRYPT_EMAIL=gonik@quimica.unlp.edu.ar
     restart: always
 
