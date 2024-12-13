@@ -93,7 +93,7 @@ services:
     ports:
       - 8085:8080
     environment:
-      - VIRTUAL_HOST=database.gvxml.work.gd  
+      - VIRTUAL_HOST=db.goodvibes.work.gd  
     deploy:
       replicas: 0 
 volumes:
