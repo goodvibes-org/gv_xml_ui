@@ -94,7 +94,7 @@ services:
     image: adminer
     restart: always
     ports:
-      - 8085:8080
+      - 8085:9000
     environment:
       - VIRTUAL_HOST=db.goodvibes.work.gd  
     deploy:
