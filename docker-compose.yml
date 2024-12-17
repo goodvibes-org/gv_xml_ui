@@ -29,18 +29,21 @@ services:
       - vhostd:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    deploy:
+      replicas: 0
   app:
     build: .
     restart: "always"
     expose:
-      - "80"
+      - "9000"
     volumes:
       - storage:/app/data:rw
     env_file:
       - ./gcs.env
     environment:
-      - VIRTUAL_HOST=goodvibes.work.gd
-      - LETSENCRYPT_HOST=goodvibes.work.gd
+      - RUST_BACKTRACE=full
+      - VIRTUAL_HOST=app.localhost
+      - LETSENCRYPT_HOST=goodvibes.work.gd.localhost
       - LETSENCRYPT_EMAIL=gonik@quimica.unlp.edu.ar
         #- VIRTUAL_PORT=2000
 
@@ -65,7 +68,7 @@ services:
         #- "filebrowser.json:/filebrowser.json" # config file
     environment:
       - FB_BASEURL=/filebrowser
-      - VIRTUAL_HOST=xmls.goodvibes.work.gd
+      - VIRTUAL_HOST=xmls.localhost
       - VIRTUAL_PORT=8080
       - LETSENCRYPT_HOST=xmls.goodvibes.work.gd
       - LETSENCRYPT_EMAIL=gonik@quimica.unlp.edu.ar

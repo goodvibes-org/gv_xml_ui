@@ -1,3 +1,4 @@
+import streamlit as st
 from productos import convert
 import datetime
 from ingredientes import convert as ing_convert
@@ -9,18 +10,16 @@ import streamlit as st
 import pandas as pd
 from google.cloud import storage
 import os
+st.set_page_config(
+    page_title="BPC",
+    page_icon="👋",
+)
 st.title(
 	"GV XML Score Calculator"
 )
-
 st.session_state["sheet_ingredientes"] = "Ingredientes_Formatted_V1"
-PRODUCTOS_BUCKET_PATH = "db/bpc_productos_proc.csv"
-INGREDIENTES_BUCKET_PATH = "db/bpc_ingredientes_proc.csv"
-PROD_ING_BUCKET_PATH = "db/bpc_productos_proc_ingredientes.csv"
 st.session_state["sheet_productos"] = "Productos"
 load_dotenv(".env")
-storage_client = storage.Client()
-bucket = storage_client.bucket("edu-xml")
 base_url = os.environ.get("REQUEST_URL")
 productos = st.file_uploader("Base de datos de Productos")
 if productos:
@@ -41,9 +40,7 @@ if productos is not None and ingredientes is not None:
 		file.write(productos.getbuffer())
 	with open(ingredientes.name, "wb") as file:
 		file.write(ingredientes.getbuffer())
-	prod_blob = bucket.blob(PRODUCTOS_BUCKET_PATH)
-	ing_blob = bucket.blob(INGREDIENTES_BUCKET_PATH)
-	prod_ing_blob = bucket.blob(PROD_ING_BUCKET_PATH)
+
 
 	st.write(
 		f"""
@@ -57,33 +54,22 @@ if productos is not None and ingredientes is not None:
 	buti = st.button("RUN")
 	if buti:
 		st.subheader("Este comando tomará cierto tiempo, esperar hasta cartel EXITO")
-		sp = subprocess.check_output(["./excel-to-csv", productos.name, ingredientes.name ,st.session_state.sheet_productos,st.session_state.sheet_ingredientes])
-		st.write(sp.decode())
-		shutil.move("bpc_ingredientes_proc.csv", "data/db_files/bpc_ingredientes_proc.csv")
-		shutil.move("bpc_productos_proc.csv", "data/db_files/bpc_productos_proc.csv")
-		shutil.move("bpc_productos_proc_ingredientes.csv", "data/db_files/bpc_productos_proc_ingredientes.csv")
-		# prod = open(prod, "r")
-		# ing_prod = open(ing_prod, "r")
-		# ing = open(ing, "r")
+		try:
+			sp = subprocess.check_output(["./excel-to-csv", "-b", f"{productos.name}", "-i", f"{ingredientes.name}" ,"-x",f"{st.session_state.sheet_productos}","-y",f"{st.session_state.sheet_ingredientes}"], stderr=subprocess.STDOUT)
+			st.write(sp)
+			st.write(sp.decode())
+		except subprocess.CalledProcessError as err:
+			st.write()
+			st.write(err.stdout, "\n", err.stderr )
+		except Exception as e:
+			st.write(e)
+	
+		shutil.copy("bpc_ingredientes_proc.csv", "data/db_files/bpc_ingredientes_proc.csv")
+		shutil.copy("bpc_productos_proc.csv", "data/db_files/bpc_productos_proc.csv")
+		shutil.copy("bpc_productos_proc_ingredientes.csv", "data/db_files/bpc_productos_proc_ingredientes.csv")
+	
 		st.write("Archivos digeridos exitosamente, corriendo scores")
-
-		# print("Ingredientes")
-		# ing_blob.upload_from_filename("bpc_ingredientes_proc.csv")
-		# print("Productos")
-		# prod_blob.upload_from_filename("bpc_productos_proc.csv")
-		# print("Ingredientes de Productos")
-		# prod_ing_blob.upload_from_filename("bpc_productos_proc_ingredientes.csv")
-
-
-		# payload = {
-		# 	"prod_data" : prod,
-		# 	"prod_ing_data": ing_prod,
-		# 	"ing_data": ing
-		# }
 		st.write("about to make request")
-		# with open("jsondump.json", "w") as file:
-			# json.dump(payload,file)
-		# response = requests.post(url= "http://localhost:3000/first_run_bytes", json = payload).content.decode()
 		if not update_run:
 			response = requests.get(url = f"http://calculator:3000/")
 			st.write("request made")

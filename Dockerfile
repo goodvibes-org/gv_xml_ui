@@ -18,8 +18,8 @@ COPY container.env .env
 ADD https://api.github.com/repos/goodvibes-org/e2csv-bin/releases/latest metadata
 RUN wget https://github.com/goodvibes-org/e2csv-bin/releases/latest/download/excel-to-csv
 RUN chmod +x "excel-to-csv"
-EXPOSE 8501
+EXPOSE 9000
 
 HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
 
-ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=80", "--server.address=0.0.0.0"]
+ENTRYPOINT ["streamlit", "run", "App.py", "--server.port=9000", "--server.address=0.0.0.0"]
