@@ -30,7 +30,7 @@ services:
       - html:/usr/share/nginx/html
       - /var/run/docker.sock:/var/run/docker.sock:ro
     deploy:
-      replicas: 0
+      replicas: ${REPLICAS_LETSENCRYPT}
   app:
     build: .
     restart: "always"
@@ -42,7 +42,7 @@ services:
       - ./gcs.env
     environment:
       - RUST_BACKTRACE=full
-      - VIRTUAL_HOST=app.localhost
+      - VIRTUAL_HOST=${URL_APP}
       - LETSENCRYPT_HOST=goodvibes.work.gd.localhost
       - LETSENCRYPT_EMAIL=gonik@quimica.unlp.edu.ar
         #- VIRTUAL_PORT=2000
@@ -70,7 +70,7 @@ services:
       - FB_BASEURL=/filebrowser
       - VIRTUAL_HOST=xmls.localhost
       - VIRTUAL_PORT=8080
-      - LETSENCRYPT_HOST=xmls.goodvibes.work.gd
+      - LETSENCRYPT_HOST=${URL_FILEBROWSER}
       - LETSENCRYPT_EMAIL=gonik@quimica.unlp.edu.ar
     restart: always
 
