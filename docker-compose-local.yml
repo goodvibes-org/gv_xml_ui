@@ -1,0 +1,105 @@
+services:
+  nginx-proxy:
+    build: ./nginx
+    container_name: nginx-proxy
+
+
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - certs:/etc/nginx/certs:ro
+      - vhostd:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
+    depends_on:
+      - app
+      - filebrowser
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    restart: always
+    environment:
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+    volumes:
+      - certs:/etc/nginx/certs:rw
+      - vhostd:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    deploy:
+      replicas: 0
+  app:
+    build: .
+    restart: "always"
+    ports:
+      - "7501:8501"
+    volumes:
+      - storage:/app/data:rw
+    env_file:
+      - ./gcs.env
+    environment:
+      - VIRTUAL_HOST=app.localhost
+      - LETSENCRYPT_HOST=goodvibes.work.gd
+      - LETSENCRYPT_EMAIL=gonik@quimica.unlp.edu.ar
+        #- VIRTUAL_PORT=2000
+
+  calculator:
+    build: ../gv_xml/
+    volumes:
+      - storage:/data/share:rw
+    ports:
+      - "3000:3000"
+
+    env_file:
+      - ./gcs.env
+      - ../gv_xml/docker.env
+  filebrowser:
+    image: hurlenko/filebrowser
+    container_name: filebrowser
+    user: 1000:1000 
+    volumes:
+       - storage:/data
+#      - storage:/srv # files will be stored here  
+        #- "./filebrowser.db:/database.db" # users info/settings will be stored here
+        #- "filebrowser.json:/filebrowser.json" # config file
+    environment:
+      - FB_BASEURL=/filebrowser
+      - VIRTUAL_HOST=xmls.goodvibes.work.gd
+      - VIRTUAL_PORT=8080
+      - LETSENCRYPT_HOST=xmls.goodvibes.work.gd
+      - LETSENCRYPT_EMAIL=gonik@quimica.unlp.edu.ar
+    restart: always
+
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    # set shared memory limit when using docker-compose
+    shm_size: 128mb
+    # or set shared memory limit when deploy via swarm stack
+    #volumes:
+    #  - type: tmpfs
+    #    target: /dev/shm
+    #    tmpfs:
+    #      size: 134217728 # 128*2^20 bytes = 128Mb
+    environment:
+      POSTGRES_PASSWORD: example
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8085:8080
+    environment:
+      - VIRTUAL_HOST=db.goodvibes.work.gd  
+    deploy:
+      replicas: 0 
+volumes:
+  storage:
+  certs:
+  html:
+  vhostd:
