@@ -20,6 +20,6 @@ RUN wget https://github.com/goodvibes-org/e2csv-bin/releases/latest/download/exc
 RUN chmod +x "excel-to-csv"
 EXPOSE 9000
 
-HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
+HEALTHCHECK CMD curl --fail http://localhost:9000/_stcore/health
 
-ENTRYPOINT ["streamlit", "run", "App.py", "--server.port=9000", "--server.address=0.0.0.0"]
+ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=9000", "--server.address=0.0.0.0"]
