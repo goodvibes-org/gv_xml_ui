@@ -30,7 +30,7 @@ services:
       - html:/usr/share/nginx/html
       - /var/run/docker.sock:/var/run/docker.sock:ro
     deploy:
-      replicas: ${REPLICAS_LETSENCRYPT}
+      replicas: 0
   app:
     build: .
     restart: "always"
@@ -45,7 +45,7 @@ services:
       - VIRTUAL_HOST=${URL_APP}
       - LETSENCRYPT_HOST=goodvibes.work.gd.localhost
       - LETSENCRYPT_EMAIL=gonik@quimica.unlp.edu.ar
-        #- VIRTUAL_PORT=2000
+      - VIRTUAL_PORT=9000
 
   calculator:
     build: ../gv_xml/
@@ -68,7 +68,7 @@ services:
         #- "filebrowser.json:/filebrowser.json" # config file
     environment:
       - FB_BASEURL=/filebrowser
-      - VIRTUAL_HOST=xmls.localhost
+      - VIRTUAL_HOST=${URL_FILEBROWSER}
       - VIRTUAL_PORT=8080
       - LETSENCRYPT_HOST=${URL_FILEBROWSER}
       - LETSENCRYPT_EMAIL=gonik@quimica.unlp.edu.ar
@@ -96,9 +96,9 @@ services:
     ports:
       - 8085:9000
     environment:
-      - VIRTUAL_HOST=db.goodvibes.work.gd  
+      - VIRTUAL_HOST=db.goodvibes.work.gd
     deploy:
-      replicas: 0 
+      replicas: 0
 volumes:
   storage:
   certs:

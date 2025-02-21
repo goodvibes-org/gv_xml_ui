@@ -22,4 +22,4 @@ EXPOSE 9000
 
 HEALTHCHECK CMD curl --fail http://localhost:9000/_stcore/health
 
-ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=9000", "--server.address=0.0.0.0"]
+ENTRYPOINT ["streamlit", "run", "App.py", "--server.port=9000", "--server.address=0.0.0.0"]

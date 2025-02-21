@@ -1,10 +1,9 @@
 import pandas as pd 
 import matplotlib.pyplot as plt
-
-
-EDU_DF_PATH = "scores_edu.csv"
+import os
+EDU_DF_PATH = "scores_edu_remotos.csv"
 R_DF_PATH = "scores_r.csv"
-
+os.chdir("/home/gonik/Documents/git/goodvibes-org/gv_xml_ui/validacion")
 edu = pd.read_csv(EDU_DF_PATH)
 r = pd.read_csv(R_DF_PATH, sep = "\t")
 

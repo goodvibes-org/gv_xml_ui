@@ -67,7 +67,7 @@ services:
         #- "filebrowser.json:/filebrowser.json" # config file
     environment:
       - FB_BASEURL=/filebrowser
-      - VIRTUAL_HOST=xmls.goodvibes.work.gd
+      - VIRTUAL_HOST=xmls.localhost
       - VIRTUAL_PORT=8080
       - LETSENCRYPT_HOST=xmls.goodvibes.work.gd
       - LETSENCRYPT_EMAIL=gonik@quimica.unlp.edu.ar
