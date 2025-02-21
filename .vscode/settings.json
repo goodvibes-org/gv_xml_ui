@@ -1,0 +1,24 @@
+{
+	"sqltools.connections": [
+		{
+			"previewLimit": 50,
+			"server": "localhost",
+			"port": 5432,
+			"driver": "PostgreSQL",
+			"name": "local_db",
+			"database": "postgres",
+			"username": "postgres",
+			"password": "example"
+		},
+		{
+			"previewLimit": 50,
+			"server": "http://35.209.52.21",
+			"port": 5432,
+			"driver": "PostgreSQL",
+			"name": "remote",
+			"database": "postgres",
+			"username": "postgres",
+			"password": "example"
+		}
+	]
+}

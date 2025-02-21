@@ -57,7 +57,12 @@ if productos is not None and ingredientes is not None:
 	buti = st.button("RUN")
 	if buti:
 		st.subheader("Este comando tomará cierto tiempo, esperar hasta cartel EXITO")
-		sp = subprocess.check_output(["./excel-to-csv", productos.name, ingredientes.name ,st.session_state.sheet_productos,st.session_state.sheet_ingredientes])
+		try:
+			sp = subprocess.check_output(["./excel-to-csv", "-p",f"{productos.name}", "-i", f"{ingredientes.name}" ,"-x",f"{st.session_state.sheet_productos}","-y",f"{st.session_state.sheet_ingredientes}", "home"], stderr=subprocess.STDOUT)
+		except subprocess.CalledProcessError as err:
+			st.write( err.stdout.decode("utf-8") )
+		except Exception as e:
+			st.write(e)	
 		st.write(sp.decode())
 		shutil.move("bpc_ingredientes_proc.csv", "data/db_files/bpc_ingredientes_proc.csv")
 		shutil.move("bpc_productos_proc.csv", "data/db_files/bpc_productos_proc.csv")
