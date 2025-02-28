@@ -68,7 +68,7 @@ if productos is not None and ingredientes is not None:
 		st.write("about to make request")
 
 		if not update_run:
-			response = requests.get(url = f"http://calculator:3000/solares")
+			response = requests.get(url = f"http://calculator:3000/home")
 			st.write("request made")
 		else:
 			response = requests.get(url = f"http://{base_url}:3000/update")
