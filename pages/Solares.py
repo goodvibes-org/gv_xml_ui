@@ -60,9 +60,9 @@ if productos is not None and ingredientes is not None:
 		except Exception as e:
 			st.write(e)
 	
-		shutil.copy("bpc_ingredientes_proc.csv", "data/db_files/bpc_ingredientes_proc.csv")
+		shutil.copy("solares_ingredientes_proc.csv", "data/db_files/solares_ingredientes_proc.csv")
 		shutil.copy("solares_productos_proc.csv", "data/db_files/solares_productos_proc.csv")
-		shutil.copy("bpc_productos_proc_ingredientes.csv", "data/db_files/bpc_productos_proc_ingredientes.csv")
+		shutil.copy("solares_productos_proc_ingredientes.csv", "data/db_files/solares_productos_proc_ingredientes.csv")
 	
 		st.write("Archivos digeridos exitosamente, corriendo scores")
 		st.write("about to make request")

@@ -17,10 +17,9 @@ st.set_page_config(
 st.title(
 	"GV XML Score Calculator"
 )
-st.session_state["sheet_ingredientes"] = "Ingredientes_Formatted_V1"
-st.session_state["sheet_productos"] = "Productos"
+st.session_state["sheet_ingredientes"] = "_"
+st.session_state["sheet_productos"] = "_"
 load_dotenv(".env")
-
 base_url = os.environ.get("REQUEST_URL")
 productos = st.file_uploader("Base de datos de Productos")
 if productos:
@@ -41,6 +40,8 @@ if productos is not None and ingredientes is not None:
 		file.write(productos.getbuffer())
 	with open(ingredientes.name, "wb") as file:
 		file.write(ingredientes.getbuffer())
+
+
 	st.write(
 		f"""
 		{productos.name} subido exitosamente\n
@@ -54,21 +55,22 @@ if productos is not None and ingredientes is not None:
 	if buti:
 		st.subheader("Este comando tomará cierto tiempo, esperar hasta cartel EXITO")
 		try:
-			sp = subprocess.check_output(["./excel-to-csv", "-p",f"{productos.name}", "-i", f"{ingredientes.name}" ,"-x",f"{st.session_state.sheet_productos}","-y",f"{st.session_state.sheet_ingredientes}", "home"], stderr=subprocess.STDOUT)
+			sp = subprocess.check_output(["./excel-to-csv" ,"-p", f"{productos.name}", "-i", f"{ingredientes.name}" ,"-x",f"{st.session_state.sheet_productos}","-y",f"{st.session_state.sheet_ingredientes}", "foods"], stderr=subprocess.STDOUT)
+			st.write(sp)
 		except subprocess.CalledProcessError as err:
-			st.write( err.stdout.decode("utf-8") )
+			st.write()
+			st.write(err.stdout, "\n", err.stderr )
 		except Exception as e:
 			st.write(e)
 	
-		shutil.copy("home_ingredientes_proc.csv", "data/db_files/home_ingredientes_proc.csv")
-		shutil.copy("home_productos_proc.csv", "data/db_files/home_productos_proc.csv")
-		shutil.copy("home_productos_proc_ingredientes.csv", "data/db_files/home_productos_proc_ingredientes.csv")
+		shutil.copy("foods_ingredientes_proc.csv", "data/db_files/foods_ingredientes_proc.csv")
+		shutil.copy("foods_productos_proc.csv", "data/db_files/foods_productos_proc.csv")
+		shutil.copy("foods_productos_proc_ingredientes.csv", "data/db_files/foods_productos_proc_ingredientes.csv")
 	
 		st.write("Archivos digeridos exitosamente, corriendo scores")
 		st.write("about to make request")
-
 		if not update_run:
-			response = requests.get(url = f"http://calculator:3000/home")
+			response = requests.get(url = f"http://calculator:3000/foods")
 			st.write("request made")
 		else:
 			response = requests.get(url = f"http://{base_url}:3000/update")
