@@ -1,16 +1,14 @@
 import pandas as pd 
 import matplotlib.pyplot as plt
 import os
-EDU_DF_PATH = "scores_edu_remotos.csv"
-R_DF_PATH = "scores_r.csv"
+EDU_DF_PATH = "solares_edu_directo.csv"
+R_DF_PATH = "solares_r.csv"
 os.chdir("/home/gonik/Documents/git/goodvibes-org/gv_xml_ui/validacion")
 edu = pd.read_csv(EDU_DF_PATH)
-r = pd.read_csv(R_DF_PATH, sep = "\t")
-
+r = pd.read_csv(R_DF_PATH, skipfooter=1)
 
 # Acá asumo que `norm.HPC.score` es el 10 + score
 join = edu.set_index("codigo").join(r.set_index("Codigo"), lsuffix = "edu",rsuffix= "r")
-# Esta linea se va porque el paso de 10 - x se hace en el sitio.
 # join["norm.HPC.score"] = join["norm.HPC.score"].apply( lambda x :  10 - x)
 join["diferencia"] = join["score"] - join["norm.HPC.score"]
 df = join[[ "name", "score", "norm.HPC.score", "diferencia", "numero_ingredientes"]]

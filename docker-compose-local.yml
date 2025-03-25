@@ -19,23 +19,23 @@ services:
       - app
       - filebrowser
 
-  letsencrypt:
-    image: jrcs/letsencrypt-nginx-proxy-companion
-    restart: always
-    environment:
-      - NGINX_PROXY_CONTAINER=nginx-proxy
-    volumes:
-      - certs:/etc/nginx/certs:rw
-      - vhostd:/etc/nginx/vhost.d
-      - html:/usr/share/nginx/html
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    deploy:
-      replicas: 0
+  # letsencrypt:
+  #   image: jrcs/letsencrypt-nginx-proxy-companion
+  #   restart: always
+  #   environment:
+  #     - NGINX_PROXY_CONTAINER=nginx-proxy
+  #   volumes:
+  #     - certs:/etc/nginx/certs:rw
+  #     - vhostd:/etc/nginx/vhost.d
+  #     - html:/usr/share/nginx/html
+  #     - /var/run/docker.sock:/var/run/docker.sock:ro
+  #   deploy:
+  #     replicas: 0
   app:
     build: .
     restart: "always"
     ports:
-      - "7501:8501"
+      - "7501:9000"
     volumes:
       - storage:/app/data:rw
     env_file:
@@ -67,7 +67,7 @@ services:
         #- "filebrowser.json:/filebrowser.json" # config file
     environment:
       - FB_BASEURL=/filebrowser
-      - VIRTUAL_HOST=xmls.goodvibes.work.gd
+      - VIRTUAL_HOST=xmls.localhost
       - VIRTUAL_PORT=8080
       - LETSENCRYPT_HOST=xmls.goodvibes.work.gd
       - LETSENCRYPT_EMAIL=gonik@quimica.unlp.edu.ar
@@ -95,9 +95,9 @@ services:
     ports:
       - 8085:8080
     environment:
-      - VIRTUAL_HOST=db.goodvibes.work.gd  
+      - VIRTUAL_HOST=dbs.localhost  
     deploy:
-      replicas: 0 
+      replicas: 1 
 volumes:
   storage:
   certs:
