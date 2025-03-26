@@ -1,6 +1,6 @@
 services:
   nginx-proxy:
-    build: ./nginx
+    image: ghcr.io/goodvibes-org/gv_xml_ui/nginx-proxy:latest
     container_name: nginx-proxy
 
 
@@ -30,9 +30,9 @@ services:
       - html:/usr/share/nginx/html
       - /var/run/docker.sock:/var/run/docker.sock:ro
     deploy:
-      replicas: 0
+      replicas: 1
   app:
-    build: .
+    image: ghcr.io/goodvibes-org/gv_xml_ui/app:latest
     restart: "always"
     expose:
       - "9000"
@@ -42,13 +42,13 @@ services:
       - ./gcs.env
     environment:
       - RUST_BACKTRACE=full
-      - VIRTUAL_HOST=${URL_APP}
-      - LETSENCRYPT_HOST=goodvibes.work.gd.localhost
+      - VIRTUAL_HOST=goodvibes.work.gd
+      - LETSENCRYPT_HOST=goodvibes.work.gd
       - LETSENCRYPT_EMAIL=gonik@quimica.unlp.edu.ar
       - VIRTUAL_PORT=9000
 
   calculator:
-    build: ../gv_xml/
+    image: ghcr.io/goodvibes-org/gv_xml_ui/calculator:latest
     volumes:
       - storage:/data/share:rw
     ports:
@@ -68,9 +68,9 @@ services:
         #- "filebrowser.json:/filebrowser.json" # config file
     environment:
       - FB_BASEURL=/filebrowser
-      - VIRTUAL_HOST=${URL_FILEBROWSER}
+      - VIRTUAL_HOST=xmls.goodvibes.work.gd
       - VIRTUAL_PORT=8080
-      - LETSENCRYPT_HOST=${URL_FILEBROWSER}
+      - LETSENCRYPT_HOST=xmls.goodvibes.work.gd
       - LETSENCRYPT_EMAIL=gonik@quimica.unlp.edu.ar
     restart: always
 
