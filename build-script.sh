@@ -1,4 +1,4 @@
-#! /bin/zsh
+#! /bin/bash
 docker context use default
 cd nginx
 docker build -t ghcr.io/goodvibes-org/gv_xml_ui/nginx-proxy .

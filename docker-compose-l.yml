@@ -34,15 +34,15 @@ services:
   app:
     image: ghcr.io/goodvibes-org/gv_xml_ui/app:latest
     restart: "always"
-    expose:
-      - "9000"
+    ports:
+      - "9000:9000"
     volumes:
       - storage:/app/data:rw
     env_file:
       - ./gcs.env
     environment:
       - RUST_BACKTRACE=full
-      - VIRTUAL_HOST=app-local.localhost
+      - VIRTUAL_HOST=app.localhost
       - VIRTUAL_PORT=9000
 
   calculator:
@@ -88,14 +88,14 @@ services:
     #      size: 134217728 # 128*2^20 bytes = 128Mb
     environment:
       POSTGRES_PASSWORD: example
-
   adminer:
     image: adminer
     restart: always
     ports:
-      - 8085:9000
+      - 8090:8080
     environment:
-      - VIRTUAL_HOST=db.localhost
+      - VIRTUAL_PORT=8090
+      - VIRTUAL_HOST=adminer.localhost
     deploy:
       replicas: 1
 volumes:
